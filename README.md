@@ -1,6 +1,10 @@
 # Spend less time coding using test-driven development
 
-NLSEB PhD and Postdoc Day workshop: spend less time coding using Test-Driven Development
+[NLSEB PhD and Postdoc Day](http://nlseb.nl/nlseb2021-phd-postdoc-meeting/) workshop: spend less time coding using Test-Driven Development
+
+ * When: Tuesday April 20 2021 11.00–12.30 in Workshop session III
+ * Where: https://gather.town/ (exact link will follow)
+
 
 # Content
 
