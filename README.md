@@ -22,88 +22,15 @@ have an R environment (e.g. R Studio) installed.
 
 ## Schedule
 
-
-
-## Coarse schedule
-
  * Why important?
-  * Use new things quicker
-  * Work from big to small, focus on usage over details
-  * Good architecture
-  * Less bugs
-  * Less worry
-  * Select better packages, rOpenSci
  * Demo: is_one [YouTube](https://youtu.be/IPGfW4lrxOc) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_is_one.ogv)
  * Practice: is_even [YouTube](https://youtu.be/4NBsCis584U) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_is_even.ogv)
  * Practice: is_odd [YouTube](https://youtu.be/Lah3fm3lUiA) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_is_odd.ogv)
  * Practice: fizz_buzz [YouTube](https://youtu.be/e_ZIfLMgPVc) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_fizz_buzz.ogv)
+ * Practice: is_prime [YouTube](https://youtu.be/JtM_YSrbiek) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_is_prime.ogv)
+ * Conclusion
 
- * Practice: to_roman
- * Practice: is_prime
- * Practice: roman_to_int
-
-
-
-
-
-## Detailed schedule
-
-
-### First test
-
-```
-expect_silent(is_prime(2))
-```
-
-
-```
-expect_true(is_prime(2))
-```
-
-
-```
-expect_false(is_prime(1))
-```
-
-
-```
-expect_false(is_prime(0))
-```
-
-Write the real function:
-
-```
-expect_true(is_prime(3))
-```
-
-Write the error handling:
-
-```
-expect_error(
-  is_prime("nonsense"),
-  "input must be a number"
-)
-```
-
-```
-expect_error(
-  is_prime(c(1, 2)),
-  "input must be one number"
-)
-```
-
-```
-expect_error(
-  is_prime(c(1, 2)),
-  "input must be one number"
-)
-
-expect_silent(
-  are_prime(c(1, 2)),
-  "input must be one number"
-)
-```
-
+## Solutions
 
 ### `is_one`
 
@@ -188,6 +115,79 @@ expect_false(is_odd(2))
 expect_error(is_odd("nonsense"), "'x' must be a number")
 expect_error(is_odd(c(1, 2)), "'x' must be one number")
 expect_error(is_odd(Inf), "'x' must be a finite number")
+```
+
+### `fizz_buzz`
+
+ * Video: [YouTube](https://youtu.be/e_ZIfLMgPVc) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_fizz_buzz.ogv)
+
+```
+# From https://en.wikipedia.org/wiki/Fizz_buzz:
+#
+# Players generally sit in a circle.
+# The player designated to go first says the number "1",
+# and the players then count upwards in turn.
+# However, any number divisible by three is replaced by the word fizz
+# and any number divisible by five by the word buzz.
+# Numbers divisible by 15 become fizz buzz.
+# A player who hesitates or makes a mistake is eliminated from the game.
+#
+#For example, a typical round of fizz buzz would start as follows:
+#
+# 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, Fizz Buzz,
+# 16, 17, Fizz, 19, Buzz, Fizz, 22, 23, Fizz, Buzz, 26, Fizz, 28, 29, Fizz Buzz, 31, 32, Fizz, 34, Buzz, Fizz, ..
+
+library(testthat)
+
+fizz_buzz <- function(x) {
+  if (!is.numeric(x)) { stop("'x' must be a number") }
+  if (length(x) != 1) { stop("'x' must be one number") }
+  if (is.infinite(x)) { stop("'x' must be a finite number") }
+  if (x < 1) { stop("'x' must be at least 1") }
+  if (x %% 3 == 0 && x %% 5 == 0) { return("Fizz Buzz") }
+  if (x %% 3 == 0) { return("Fizz") }
+  if (x %% 5 == 0) { return("Buzz") }
+  as.character(x)
+}
+
+expect_silent(fizz_buzz(1))
+expect_equal(fizz_buzz(1), "1")
+expect_equal(fizz_buzz(3), "Fizz")
+expect_equal(fizz_buzz(5), "Buzz")
+expect_equal(fizz_buzz(15), "Fizz Buzz")
+expect_error(fizz_buzz("nonsense"), "'x' must be a number")
+expect_error(fizz_buzz(c(3, 5)), "'x' must be one number")
+expect_error(fizz_buzz(0), "'x' must be at least 1")
+expect_error(fizz_buzz(Inf), "'x' must be a finite number")
+```
+
+### `is_prime`
+
+ * Video: [YouTube](https://youtu.be/JtM_YSrbiek) [download (.ogv)](http://richelbilderbeek.nl/r_tdd_is_prime.ogv)
+
+```
+library(testthat)
+
+is_prime <- function(x) {
+  if (!is.numeric(x)) stop("'x' must be a number")
+  if (length(x) != 1) stop("'x' must be one number")
+  if (is.infinite(x)) stop("'x' must be a finite number")
+  if (x < 2) return(FALSE)
+  if (x == 2) return(TRUE)
+  divisors <- seq(2, x - 1)
+  for (divisor in divisors) {
+    if (x %% divisor == 0) return(FALSE)
+  }
+  TRUE
+}
+
+expect_silent(is_prime(7))
+expect_false(is_prime(1))
+expect_true(is_prime(2))
+expect_false(is_prime(4))
+expect_error(is_prime("nonsense"), "'x' must be a number")
+expect_error(is_prime(c(1, 2)), "'x' must be one number")
+expect_error(is_prime(Inf), "'x' must be a finite number")
 ```
 
 
